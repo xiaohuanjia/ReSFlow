@@ -24,7 +24,7 @@ For a simplex prior $\mu_0$, the one-step spherical update is
 
 $$
 X_0=\sqrt{\mu_0},\qquad
-\widehat X_1=\operatorname{Exp}_{X_0}\!\left(v_\theta(X_0,0)\right),\qquad
+\widehat X_1=\mathrm{Exp}_{X_0}\!\left(v_\theta(X_0,0)\right),\qquad
 \widehat\mu_1=\widehat X_1^{\,2}.
 $$
 
