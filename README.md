@@ -1,6 +1,4 @@
-# ReSFlow: Rectified Statistical Flow
-
-**Rectifying Categorical Flows on Statistical Manifolds for One-Step Generation**
+# Rectifying Categorical Flows on Statistical Manifolds for One-Step Generation
 
 Xiaohuan Jia · Renzhe Xu · Xiao Wang · Jiayun Wu · Shaohua Fan
 
