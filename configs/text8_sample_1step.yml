@@ -1,0 +1,10 @@
+# Run from the repository root. Runtime paths are relative to that root.
+extends: text8_reflow.yml
+run:
+  ckpt: logs/text8_resflow/reflow_r1_final.pt
+  device: cuda
+  seed: 42
+  method: euler
+  n_steps: 1
+  n_sample: 8
+  out: text8_samples.txt

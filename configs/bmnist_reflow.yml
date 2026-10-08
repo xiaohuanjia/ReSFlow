@@ -1,0 +1,69 @@
+# ===============================================================
+#  BMNIST + SFM (Sphere) + Standard Reflow
+#
+#  Reflow loss is fixed to the standard FM objective on reflow pairs;
+#  this is independent of how the pairs are generated.
+#
+#  Usage:
+#    python main.py configs/bmnist_train.yml
+#    python main.py configs/bmnist_reflow_run.yml
+# ===============================================================
+
+train:
+  seed: 42
+  max_iter: 100000
+  batch_size: 256
+  log_freq: 50
+  val_freq: 500
+  save_freq: 5000
+  max_grad_norm: 100.
+  optimizer:
+    type: adam
+    lr: 3.e-4
+    weight_decay: 0.
+    beta1: 0.9
+    beta2: 0.999
+  scheduler:
+    type: plateau
+    factor: 0.5
+    patience: 10
+    min_lr: 1.e-4
+
+datasets:
+  type: bmnist
+  root: ./data/bmnist
+
+model:
+  type: sphere
+  data_dims: [ 28, 28 ]
+  n_class: 2
+  ot: true
+
+encoder:
+  type: cnn
+
+conditioned: false
+visualizer:
+  type: bmnist
+  n_sample: 100
+  n_step: 200
+
+# -- Reflow ------------------------------------------------------
+reflow:
+  # Number of reflow rounds. Use 1 for a single reflow stage.
+  k: 3
+  # Requested number of (z0, z1) endpoint pairs per round.
+  n_pairs: 50000
+  gen_batch_size: 256
+  # Pair generation: ode = adaptive Dopri5; euler = fixed-step integration.
+  gen_method: ode
+  gen_n_steps: 300
+  seed: 0
+
+  max_iter: 100000
+  lr: 1.e-4
+  batch_size: 256
+  log_freq: 500
+  save_freq: 5000
+  t_schedule: uniform
+  vis_freq: 500

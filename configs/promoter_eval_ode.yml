@@ -1,0 +1,6 @@
+# Run from the repository root. Runtime paths are relative to that root.
+extends: promoter_eval_1step.yml
+run:
+  savename: promoter_resflow_eval_ode
+  method: ode
+  n_steps: 300

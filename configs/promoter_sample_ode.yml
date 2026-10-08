@@ -1,0 +1,6 @@
+# Run from the repository root. Runtime paths are relative to that root.
+extends: promoter_sample_1step.yml
+run:
+  method: ode
+  n_steps: 300
+  fasta_out: promoter_resflow_ode.fasta

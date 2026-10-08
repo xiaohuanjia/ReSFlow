@@ -1,0 +1,14 @@
+# Run from the repository root. Runtime paths are relative to that root.
+extends: text8.yml
+model:
+  type: sphere
+train:
+  # Per-GPU batch size: 128 x 4 GPUs = 512 sequences per optimizer step.
+  batch_size: 128
+trainer:
+  devices: 4
+  strategy: ddp
+run:
+  logdir: ./logs
+  savename: text8_sfm
+  resume: null

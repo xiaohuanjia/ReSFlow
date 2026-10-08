@@ -1,0 +1,18 @@
+# Run from the repository root. Runtime paths are relative to that root.
+extends: text8_reflow.yml
+run:
+  ckpt: logs/text8_resflow/reflow_r1_final.pt
+  device: cuda
+  data_root: ./data/text8
+  split: test
+  batch_size: 8
+  n_sequences: 4000
+  s_max: 10.0
+  s_min: 0.001
+  atol: 1.0e-05
+  rtol: 1.0e-05
+  log_eps: 0.001
+  n_noise: 1
+  num_workers: 2
+  seed: 42
+  no_ema: false

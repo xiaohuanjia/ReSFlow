@@ -1,0 +1,90 @@
+# ===============================================================
+#  Text8 + DiT + Standard Reflow
+#
+#  Usage:
+#    python main.py configs/text8_reflow_resume.yml
+# ===============================================================
+
+# -- Base training (standard flow matching) ---------------------
+# Note: main.py uses max_iter/val_freq/save_freq (not Lightning's max_steps).
+train:
+  seed: 42
+  max_iter: 750_000          # keep when training from scratch; ignore when reusing a ckpt
+  batch_size: 128            # DiT is memory-heavy; text8 seq_len=256, tune to fit GPU
+  log_freq: 100
+  val_freq: 1000
+  save_freq: 5000
+  max_grad_norm: 1.
+  optimizer:
+    type: adamw
+    lr: 3.e-4
+    weight_decay: 0.1
+    beta1: 0.9
+    beta2: 0.999
+  scheduler:
+    type: plateau
+    factor: 0.8
+    patience: 5
+    min_lr: 1.e-5
+
+datasets:
+  type: text8
+  root: ./data/text8
+  seq_len: 256
+
+model:
+  type: sphere
+  data_dims: [ 256 ]
+  n_class: 27
+  ot: false
+
+# DiT encoder
+encoder:
+  type: dit
+  hidden_size: 768
+  cond_dim: 128
+  vocab_size: 27
+  length: 256
+  n_blocks: 12
+  n_heads: 12
+  dropout: 0.1
+
+conditioned: false
+valid_max_batch: 16
+
+visualizer:
+  type: text8
+  n_sample: 3
+  n_step: 256
+
+# -- Reflow ------------------------------------------------------
+# Sizing notes:
+#   text8 single pair = (256, 27) float32 ~= 27 KB.
+#   n_pairs=100000 -> ~2.6 GB per tensor, ~5.2 GB/round for z0/z1 (disk + CPU RAM).
+#   reflow epochs = max_iter * batch_size / n_pairs = 40000 * 256 / 100000 ~= 102,
+#   which is in a healthy range (50-200); drop max_iter to 20000 (~51 epochs)
+#   if overfitting becomes a concern.
+#
+# Single H200 timing (gen_method=ode, k=1):
+#   - Pair generation: ~ 100000 / 256 * 50 NFE * ~20 ms ~= 6-10 min
+#   - Reflow training: 40000 * ~120 ms ~= 1.3 h
+#   - Total ~= 1.4-1.6 h
+reflow:
+  # Number of reflow rounds. Use 1 for a single reflow stage.
+  k: 1
+  # Requested number of (z0, z1) endpoint pairs per round.
+  n_pairs: 100000
+  gen_batch_size: 256        # H200 has plenty of memory; max out the pair-generation batch
+  # Pair generation: ode = adaptive Dopri5; euler = fixed-step integration.
+  gen_method: ode
+  gen_n_steps: 256           # only used when gen_method=euler
+  seed: 0
+
+  # Reflow training
+  max_iter: 40_000
+  lr: 4.e-5                  # batch went 64 -> 256 (4x), lr scaled accordingly (linear scaling)
+  batch_size: 256
+  log_freq: 200
+  save_freq: 5000
+  t_schedule: uniform
+  vis_freq: null             # text8 has no image visualisation; skip useless sampling

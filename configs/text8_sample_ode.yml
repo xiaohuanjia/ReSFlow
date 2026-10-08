@@ -1,0 +1,6 @@
+# Run from the repository root. Runtime paths are relative to that root.
+extends: text8_sample_1step.yml
+run:
+  method: ode
+  n_steps: 256
+  out: text8_samples_ode.txt

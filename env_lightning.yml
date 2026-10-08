@@ -1,0 +1,36 @@
+# Target: Linux x86_64 (glibc >= 2.28), NVIDIA GPU, CUDA 12.8-compatible driver.
+# PyTorch's CUDA wheels include their runtime; no CUDA compiler is required.
+name: ReSFlow
+channels:
+  - conda-forge
+  - bioconda
+  - nodefaults
+dependencies:
+  - python=3.10
+  - pip
+  - numpy=1.26.4
+  - scipy=1.14.1
+  - pandas=2.2.3
+  - matplotlib-base=3.9.2
+  - pillow=10.4.0
+  - pyyaml=6.0.2
+  - requests=2.32.3
+  - tqdm=4.66.5
+  - pyfaidx>=0.8,<1
+  - pysam>=0.22
+  - pytabix=0.1
+  - pip:
+      - --extra-index-url https://download.pytorch.org/whl/cu128
+      - torch==2.7.1+cu128
+      - torchvision==0.22.1+cu128
+      - pytorch-lightning==2.5.2
+      - torchmetrics==1.4.2
+      - pybigwig==0.3.23
+      - tensorboard==2.18.0
+      - protobuf==5.28.2
+      - torchdiffeq==0.2.4
+      - easydict==1.13
+      - einops==0.8.0
+      - notebook>=7,<8
+      - ipykernel>=6,<7
+      - nbformat>=5,<6

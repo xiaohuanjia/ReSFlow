@@ -1,0 +1,8 @@
+# Run from the repository root. Runtime paths are relative to that root.
+extends: bmnist_reflow.yml
+run:
+  mode: reflow
+  device: cuda
+  logdir: ./logs
+  savename: bmnist_resflow
+  resume: logs/bmnist_sfm/100000.pt

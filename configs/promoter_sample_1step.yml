@@ -1,0 +1,16 @@
+# Run from the repository root. Runtime paths are relative to that root.
+extends: promoter_reflow.yml
+run:
+  ckpt: logs/promoter_resflow/reflow_r2_final.pt
+  device: cuda
+  seed: 42
+  split: test
+  method: euler
+  n_steps: 1
+  n_sample: 64
+  shuffle: false
+  warmup: 1
+  repeat: 1
+  print_seq: 4
+  print_seq_len: 120
+  fasta_out: promoter_resflow_1step.fasta

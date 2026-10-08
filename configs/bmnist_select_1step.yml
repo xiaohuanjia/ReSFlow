@@ -1,0 +1,13 @@
+# Run from the repository root. Runtime paths are relative to that root.
+extends: bmnist_reflow.yml
+run:
+  exp_dir: logs/bmnist_resflow
+  base_ckpt: logs/bmnist_sfm/100000.pt
+  ckpt_pattern: reflow_*.pt
+  method: euler
+  n_steps: 1
+  total_sample: 1000
+  batch_size: 100
+  n_runs: 1
+  device: cuda
+  seed: 42

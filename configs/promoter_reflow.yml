@@ -1,0 +1,80 @@
+train:
+  seed: 42
+  max_iter: 200000
+  batch_size: 256
+  log_freq: 100
+  val_freq: 5000
+  save_freq: 10000
+  max_grad_norm: 100.
+  optimizer:
+    type: adam
+    lr: 5.e-4
+    weight_decay: 0.
+    beta1: 0.9
+    beta2: 0.999
+  scheduler:
+    type: plateau
+    factor: 0.5
+    patience: 10
+    min_lr: 5.e-4
+
+datasets:
+  type: promoter
+  root: ./data/promoter
+  seqlength: 1024
+  n_tsses: 100000
+  ref_file: Homo_sapiens.GRCh38.dna.primary_assembly.fa
+  ref_file_mmap: Homo_sapiens.GRCh38.dna.primary_assembly.fa.mmap
+  tsses_file: FANTOM_CAT.lv3_robust.tss.sortedby_fantomcage.hg38.v4.tsv
+  fantom_files:
+    - agg.plus.bw.bedgraph.bw
+    - agg.minus.bw.bedgraph.bw
+  fantom_blacklist_files:
+    - fantom.blacklist8.plus.bed.gz
+    - fantom.blacklist8.minus.bed.gz
+  train:
+    rand_offset: 10
+  valid:
+    n_tsses: 100000
+  test:
+    n_tsses: 100000
+
+model:
+  type: sphere
+  data_dims: [ 1024 ]
+  n_class: 4
+  ot: false
+encoder:
+  type: seq
+  embed_dim: 256
+
+conditioned: true
+valid_max_batch: null
+sample_max_batch: null
+visualizer:
+  type: promoter
+  n_step: 300
+  sei_model_path: data/promoter/best.sei.model.pth.tar
+  sei_feat_path: data/promoter/target.sei.names
+
+# -- Reflow ------------------------------------------------------
+reflow:
+  # Number of reflow rounds. Use 1 for a single reflow stage.
+  k: 2
+  # Requested number of (z0, z1) endpoint pairs per round.
+  # Conditional generation makes one pass over the training loader; fewer pairs may be saved.
+  n_pairs: 100000
+  gen_batch_size: 128     # seq_len=1024 is memory-heavy; smaller pair-gen batch
+  # Pair generation: ode = adaptive Dopri5; euler = fixed-step integration.
+  gen_method: ode
+  gen_n_steps: 300        # Euler steps (only used when gen_method=euler)
+  seed: 0
+
+  # Reflow training
+  max_iter: 100000
+  lr: 1.e-4
+  batch_size: 128
+  log_freq: 500
+  save_freq: 10000
+  t_schedule: uniform
+  vis_freq: null          # promoter visualizer is slow; skip mid-training visualisation

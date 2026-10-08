@@ -1,0 +1,8 @@
+# Run from the repository root. Runtime paths are relative to that root.
+extends: bmnist.yml
+run:
+  mode: train
+  device: cuda
+  logdir: ./logs
+  savename: bmnist_sfm
+  resume: null

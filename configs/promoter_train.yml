@@ -1,0 +1,8 @@
+# Run from the repository root. Runtime paths are relative to that root.
+extends: promoter.yml
+run:
+  mode: train
+  device: cuda
+  logdir: ./logs
+  savename: promoter_sfm
+  resume: null

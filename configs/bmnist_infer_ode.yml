@@ -1,0 +1,6 @@
+# Run from the repository root. Runtime paths are relative to that root.
+extends: bmnist_infer_1step.yml
+run:
+  savename: bmnist_resflow_ode
+  method: ode
+  n_steps: 200

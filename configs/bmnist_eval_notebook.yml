@@ -1,0 +1,32 @@
+# Open eval_bmnist.ipynb from the repository root; edit settings here.
+extends: bmnist_reflow.yml
+evaluation:
+  device: cuda
+  output_dir: ./logs/bmnist_evaluation
+  # Checkpoints must already exist. No training is run by the notebook.
+  checkpoints:
+    - name: SFM
+      path: ./logs/bmnist_sfm/100000.pt
+    - name: ReSFlow
+      path: ./logs/bmnist_resflow/reflow_r3_final.pt
+  # Use test for final evaluation; use valid when comparing checkpoints.
+  split: test
+  data_batch_size: 256
+  num_workers: 0
+  # Statistics use every image in the selected split, with separate caches.
+  fid_batch_size: 256
+  total_sample: 1000
+  sample_batch_size: 100
+  seeds: [42, 43, 44]
+  # Warm-up is excluded from the sampling timer and sample count.
+  warmup_sample: 2
+  samplers:
+    - name: one_step
+      method: euler
+      n_steps: 1
+    - name: ode
+      method: ode
+      # ODE uses adaptive Dopri5; this does not set its NFE.
+      n_steps: 200
+  grid_n_sample: 100
+  grid_nrow: 10

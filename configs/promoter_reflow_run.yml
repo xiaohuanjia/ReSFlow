@@ -1,0 +1,8 @@
+# Run from the repository root. Runtime paths are relative to that root.
+extends: promoter_reflow.yml
+run:
+  mode: reflow
+  device: cuda
+  logdir: ./logs
+  savename: promoter_resflow
+  resume: logs/promoter_sfm/latest.pt
